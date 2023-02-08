@@ -23,7 +23,7 @@ if (args != null && args.Length > 0)
                 int round = ArgsUtils.parseInt(args[2]);
                 string sort = string.Empty;
 
-                if (args[3] == "--sort" && args.Length == 5)
+                if (args.Length == 5 && args[3] == "--sort")
                 {
                     sort = ArgsUtils.ParseString(args[4]);
                 }
