@@ -18,7 +18,7 @@ namespace dotbaseball.AmateurDraft
 
         public AmateurDraftByTeam(string teamId, int year, string sort)
         {
-            _url = string.Format("https://www.baseball-reference.com/draft/?team_ID={0}&year_ID={1}&draft_type=junreg&query_type=franch_year", teamId, year);
+            _url = string.Format("https://www.baseball-reference.com/draft/?team_ID={0}&year_ID={1}&draft_type=junreg&query_type=franch_year", teamId.ToUpper(), year);
             _sort = getSortBy(sort);
             _df = this.parse();
         }

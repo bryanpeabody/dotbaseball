@@ -10,7 +10,7 @@ using dotbaseball.Formatters;
 
 namespace dotbaseball.AmateurDraft
 {
-    public class AmateurDraft 
+    public class AmateurDraft
     {
         private readonly string _url;
         private readonly string _sort;
@@ -28,17 +28,13 @@ namespace dotbaseball.AmateurDraft
             _df.OrderBy(_sort).PrettyPrint();
         }
 
-        private string getSortBy(string sort)
+        public string getSortBy(string sort)
         {          
             string lowerSort = sort.ToLower().Trim();
 
             if (lowerSort == Fields.Year.ToLower()) 
             {
                 return Fields.Year;
-            }
-            else if (lowerSort == Fields.RoundPick.ToLower())
-            {
-                return Fields.RoundPick;
             }
             else if (lowerSort == Fields.OverallPick.ToLower())
             {
@@ -82,7 +78,7 @@ namespace dotbaseball.AmateurDraft
             }
         }
         
-        private DataFrame parse()
+        public DataFrame parse()
         {
             HtmlWeb hw = new HtmlWeb();
 			HtmlDocument doc = hw.Load(_url);
