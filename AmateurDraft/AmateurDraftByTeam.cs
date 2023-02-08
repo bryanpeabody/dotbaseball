@@ -10,15 +10,15 @@ using dotbaseball.Formatters;
 
 namespace dotbaseball.AmateurDraft
 {
-    public class AmateurDraft 
+    public class AmateurDraftByTeam
     {
         private readonly string _url;
         private readonly string _sort;
         private readonly DataFrame _df;
 
-        public AmateurDraft(int year, int draftRound, string sort)
+        public AmateurDraftByTeam(string teamId, int year, string sort)
         {
-            _url = string.Format("https://www.baseball-reference.com/draft/?year_ID={0}&draft_round={1}&draft_type=junreg&query_type=year_round&", year, draftRound);
+            _url = string.Format("https://www.baseball-reference.com/draft/?team_ID={0}&year_ID={1}&draft_type=junreg&query_type=franch_year", teamId, year);
             _sort = getSortBy(sort);
             _df = this.parse();
         }
@@ -75,10 +75,10 @@ namespace dotbaseball.AmateurDraft
             else if (lowerSort == Fields.DraftedOutOf.ToLower())
             {
                 return Fields.DraftedOutOf;
-            }
+            }            
             else
             {
-                return Fields.OverallPick;
+                return Fields.Round;
             }
         }
         
@@ -91,8 +91,9 @@ namespace dotbaseball.AmateurDraft
             int rowNum = 0;
 			
             List<int> year = new List<int>();
-            List<int> overallPick = new List<int>();
             List<int> round = new List<int>();
+            List<int> overallPick = new List<int>();
+            List<int> roundPick = new List<int>();            
             List<string> team = new List<string>();
             List<string> signed = new List<string>();
             List<string> bonus = new List<string>();
@@ -114,23 +115,25 @@ namespace dotbaseball.AmateurDraft
                         var data = row.SelectNodes("td|th").ToList<HtmlNode>();
 
                         year.Add(Convert.ToInt16(data[0].InnerText));               // Year                        
-                        round.Add(Convert.ToInt16(data[1].InnerText));              // Round
+                        round.Add(Convert.ToInt16(data[1].InnerText));              // Round                        
                         overallPick.Add(Convert.ToInt16(data[3].InnerText));        // Overall Pick
-                        team.Add(data[6].InnerText);                                // Team
-                        signed.Add(data[7].InnerText);                              // Signed
-                        bonus.Add(data[8].InnerText);                               // Bonus
-                        name.Add(StringUtils.Clean(data[9].InnerText, "&nbsp;"));   // Name
-                        position.Add(data[10].InnerText);                           // Position
-                        type.Add(data[23].InnerText);                               // Type
-                        draftedOutOf.Add(data[24].InnerText);                       // Drafted out of
+                        roundPick.Add(Convert.ToInt16(data[4].InnerText));          // Round Pick
+                        team.Add(data[5].InnerText);                                // Team
+                        signed.Add(data[6].InnerText);                              // Signed
+                        bonus.Add(data[7].InnerText);                               // Bonus
+                        name.Add(StringUtils.Clean(data[8].InnerText, "&nbsp;"));   // Name
+                        position.Add(data[9].InnerText);                            // Position
+                        type.Add(data[22].InnerText);                               // Type
+                        draftedOutOf.Add(data[23].InnerText);                       // Drafted out of
 						break;
 				}
 			}
             
             DataFrameColumn[] columns = {
-                new PrimitiveDataFrameColumn<int>(Fields.Year, year),
-                new PrimitiveDataFrameColumn<int>(Fields.OverallPick, overallPick),
+                new PrimitiveDataFrameColumn<int>(Fields.Year, year),                
                 new PrimitiveDataFrameColumn<int>(Fields.Round, round),
+                new PrimitiveDataFrameColumn<int>(Fields.OverallPick, overallPick),
+                new PrimitiveDataFrameColumn<int>(Fields.RoundPick, roundPick),
                 new StringDataFrameColumn(Fields.Team, team),
                 new StringDataFrameColumn(Fields.Signed, signed),
                 new StringDataFrameColumn(Fields.Bonus, bonus),

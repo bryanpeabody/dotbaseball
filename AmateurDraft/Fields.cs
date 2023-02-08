@@ -10,6 +10,7 @@ namespace dotbaseball.AmateurDraft
     public class Fields 
     {
         public static string Year = "Year";
+        public static string RoundPick = "RoundPick";
         public static string OverallPick = "OverallPick";
         public static string Round = "Round";
         public static string Team = "Team";
