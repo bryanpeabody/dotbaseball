@@ -16,9 +16,15 @@ namespace dotbaseball.AmateurDraft
         private readonly string _sort;
         private readonly DataFrame _df;
 
-        public AmateurDraftByTeam(string teamId, int year, string sort)
+        public AmateurDraftByTeam(string[] args)
         {
-            _url = string.Format("https://www.baseball-reference.com/draft/?team_ID={0}&year_ID={1}&draft_type=junreg&query_type=franch_year", teamId.ToUpper(), year);
+            var parsedArgs = ArgsParser.Parse(args, 2);            
+
+            string teamId = parsedArgs.parameters[0].ToUpper();
+            string year = parsedArgs.parameters[1];
+            string sort = parsedArgs.sort;
+
+            _url = string.Format("https://www.baseball-reference.com/draft/?team_ID={0}&year_ID={1}&draft_type=junreg&query_type=franch_year", teamId, year);
             _sort = getSortBy(sort);
             _df = this.parse();
         }

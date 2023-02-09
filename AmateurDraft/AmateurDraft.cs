@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using Microsoft.Data.Analysis;
 using dotbaseball.Utils;
 using dotbaseball.Formatters;
+using CommandLine;
 
 namespace dotbaseball.AmateurDraft
 {
@@ -16,8 +17,14 @@ namespace dotbaseball.AmateurDraft
         private readonly string _sort;
         private readonly DataFrame _df;
 
-        public AmateurDraft(int year, int draftRound, string sort)
+        public AmateurDraft(string[] args)
         {
+            var parsedArgs = ArgsParser.Parse(args, 2);            
+
+            string year = parsedArgs.parameters[0];
+            string draftRound = parsedArgs.parameters[1];
+            string sort = parsedArgs.sort;
+
             _url = string.Format("https://www.baseball-reference.com/draft/?year_ID={0}&draft_round={1}&draft_type=junreg&query_type=year_round&", year, draftRound);
             _sort = getSortBy(sort);
             _df = this.parse();
