@@ -21,13 +21,3 @@ switch(args[0].ToLower())
         Usage.ShowUsage();
         break;
 }
-/*else if (args != null && args.Length > 0)
-{    
-    if (args[0].ToLower() == "amateurdraft")
-    {        
-        new AmateurDraft(args).show();
-    }
-    else if (args[0].ToLower() == "amateurdraftbyteam")
-    {
-    }
-}*/
